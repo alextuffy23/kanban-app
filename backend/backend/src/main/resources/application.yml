@@ -1,0 +1,58 @@
+spring:
+  application:
+    name: kanban-backend                # Your app name (used in logs, actuator, etc.)
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/kanban_db
+    username: postgres
+    password: your_secure_password      # CHANGE THIS in production!
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update                  # dev: update | prod: validate or none
+    show-sql: true                      # helpful during development
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+
+  redis:
+    host: localhost
+    port: 6379
+    # password: your_redis_password     # if you set one
+    # timeout: 2000ms
+
+  security:
+    jwt:
+      secret: your-very-long-secret-key-min-256-bits-random   # CHANGE THIS! Use a strong, random key
+      expiration: 86400000              # 24 hours in ms (can be shorter for security)
+      refresh-expiration: 604800000     # 7 days for refresh token (optional)
+
+server:
+  port: 8080                          # backend runs on 8080
+  servlet:
+    context-path: /api                # all REST endpoints under /api (optional but clean)
+
+# Logging (optional but useful)
+logging:
+  level:
+    org.springframework.security: INFO
+    org.springframework.web: INFO
+    com.yourname.kanban: DEBUG        # your package – see detailed logs
+
+# Actuator / Monitoring (good for later phases)
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus
+  endpoint:
+    health:
+      show-details: always
+
+# WebSocket / STOMP (optional prefix)
+stomp:
+  endpoint: /ws                       # WebSocket endpoint
+  destination-prefixes: /app          # where messages are sent to server
+  broker-prefixes: /topic,/queue      # where server broadcasts to clients
