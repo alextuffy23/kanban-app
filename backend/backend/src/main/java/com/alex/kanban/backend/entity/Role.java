@@ -1,6 +1,7 @@
 package com.alex.kanban.backend.entity;
 
-public class Role {
+public enum Role {
   USER,
   ADMIN
+  
 }
