@@ -19,18 +19,22 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 
-@Entity  //tells JPA this class rep a table
+@Entity  //tells Hibernate/JPA this class maps to a db table. 
 @Table(name = "users") 
-@Getter
-@Setter
-@Builder
+@Getter 
+@Setter 
+@NoArgsConstructor 
+@AllArgsConstructor 
+@Builder 
+
 public class User {
-  
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
@@ -42,12 +46,12 @@ public class User {
   private String email;
 
   @Column(nullable = false)
-  private String password; //hashed
+  private String password; 
 
   @ElementCollection(fetch = FetchType.EAGER)
   @CollectionTable(
     name = "user_roles",
-    joinColumns = @JoinColumn(name = "iser_id")
+    joinColumns = @JoinColumn(name = "user_id")
   )
   @Enumerated(EnumType.STRING)
   @Builder.Default
